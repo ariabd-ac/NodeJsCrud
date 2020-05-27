@@ -60,7 +60,7 @@ app.get("/crud/:id", async (req, res) => {
 });
 
 // delete
-app.get("/crud/:id", async (req, res) => {
+app.delete("/crud/:id", async (req, res) => {
   try {
     const id = req.params.id;
 
@@ -80,7 +80,21 @@ app.get("/crud/:id", async (req, res) => {
 app.put("/crud/:id", async (req, res) => {
   try {
     const { username, email, password } = req.body;
-  } catch (error) {}
+
+    const id = req.params.id;
+
+    const updateUser = await User.update({
+      username,
+      email,
+      password,
+    });
+
+    await updateUser;
+    res.json("berhasil di update");
+  } catch (error) {
+    console.error(err.message);
+    res.status(500).send("server err");
+  }
 });
 
 app.listen(4500, () => console.log("port berjalan 4500"));
